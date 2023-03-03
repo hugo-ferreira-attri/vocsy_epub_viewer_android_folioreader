@@ -38,6 +38,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -127,6 +128,10 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var density: Float = 0.toFloat()
     private var topActivity: Boolean? = null
     private var taskImportance: Int = 0
+
+    //Minhas variaveis
+    private var isNight: Boolean = false
+    private var progressBar: ProgressBar? =null
 
     // page count
     private lateinit var pageTrackerViewModel: PageTrackerViewModel
@@ -328,7 +333,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
-        val drawable = ContextCompat.getDrawable(this, R.drawable.ic_drawer)
+        val drawable = ContextCompat.getDrawable(this, R.drawable.back)
         UiUtil.setColorIntToDrawable(config.currentThemeColor, drawable!!)
         toolbar!!.navigationIcon = drawable
 
