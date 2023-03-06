@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.folioreader.model.locators
 
 import android.os.Parcel
@@ -41,12 +43,12 @@ open class ReadLocator : Locator, Parcelable {
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest?.writeString(bookId)
-        dest?.writeString(href)
-        dest?.writeLong(created)
-        dest?.writeString(title)
-        dest?.writeSerializable(locations)
-        dest?.writeSerializable(text)
+        dest.writeString(bookId)
+        dest.writeString(href)
+        dest.writeLong(created)
+        dest.writeString(title)
+        dest.writeSerializable(locations)
+        dest.writeSerializable(text)
     }
 
     companion object {

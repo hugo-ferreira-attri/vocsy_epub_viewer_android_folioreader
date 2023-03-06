@@ -5,18 +5,15 @@
     tools:context="com.folioreader.ui.activity.FolioActivity">
 
     <item
-        android:id="@+id/itemBookmark"
-        android:icon="@drawable/ic_baseline_bookmark_border_24"
+        android:id="@+id/itemMark"
+        android:icon="@drawable/mark"
         android:title="@string/menu_item_config"
-        app:showAsAction="ifRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:showAsAction="ifRoom|withText"
         tools:showAsAction="always" />
 
-    <item
-        android:id="@+id/itemSearch"
-        android:icon="@drawable/ic_search"
-        android:title="@string/menu_item_search"
-        app:showAsAction="ifRoom"
-        tools:showAsAction="always" />
+
 
     <item
         android:id="@+id/itemConfig"
@@ -26,12 +23,5 @@
         tools:showAsAction="always" />
 
 
-    <item
-        android:id="@+id/itemTts"
-        android:icon="@drawable/man_speech_icon"
-        android:title="@string/menu_item_tts"
-        android:visible="false"
-        app:showAsAction="ifRoom"
-        tools:showAsAction="always" />
 
 </menu>

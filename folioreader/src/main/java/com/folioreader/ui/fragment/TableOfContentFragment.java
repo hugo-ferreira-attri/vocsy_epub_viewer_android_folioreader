@@ -75,8 +75,8 @@ public class TableOfContentFragment extends Fragment implements TOCAdapter.TOCCa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTableOfContentsRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_menu);
-        errorView = (TextView) view.findViewById(R.id.tv_error);
+        mTableOfContentsRecyclerView = view.findViewById(R.id.recycler_view_menu);
+        errorView = view.findViewById(R.id.tv_error);
 
         configRecyclerViews();
         initAdapter();
