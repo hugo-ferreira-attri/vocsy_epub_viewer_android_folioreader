@@ -131,4 +131,3 @@ public class HighlightFragment extends Fragment implements HighlightAdapter.High
     }
 }
 
-

@@ -5,11 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -19,9 +17,7 @@ import com.folioreader.Config;
 import com.folioreader.Constants;
 import com.folioreader.FolioReader;
 import com.folioreader.R;
-import com.folioreader.ui.fragment.BookmarkFragment;
 import com.folioreader.ui.fragment.HighlightFragment;
-import com.folioreader.ui.fragment.TableOfContentFragment;
 import com.folioreader.util.AppUtil;
 import com.folioreader.util.UiUtil;
 
@@ -50,23 +46,23 @@ public class ContentHighlightActivity extends AppCompatActivity {
     private void initViews() {
 
         UiUtil.setColorIntToDrawable(mConfig.getCurrentThemeColor(), ((ImageView) findViewById(R.id.btn_close)).getDrawable());
-        findViewById(R.id.layout_content_highlights).setBackgroundDrawable(UiUtil.getShapeDrawable(mConfig.getCurrentThemeColor()));
+      //  findViewById(R.id.layout_content_highlights).setBackgroundDrawable(UiUtil.getShapeDrawable(mConfig.getCurrentThemeColor()));
 
         if (mIsNightMode) {
             findViewById(R.id.toolbar).setBackgroundColor(Color.BLACK);
-            findViewById(R.id.btn_highlights).setBackgroundDrawable(UiUtil.createStateDrawable(mConfig.getCurrentThemeColor(), ContextCompat.getColor(this, R.color.black)));
-
-            ((TextView) findViewById(R.id.btn_highlights)).setTextColor(UiUtil.getColorList(ContextCompat.getColor(this, R.color.black), mConfig.getCurrentThemeColor()));
-
-        } else {
-            ((TextView) findViewById(R.id.btn_highlights)).setTextColor(UiUtil.getColorList(ContextCompat.getColor(this, R.color.white), mConfig.getCurrentThemeColor()));
-
-            findViewById(R.id.btn_highlights).setBackgroundDrawable(UiUtil.createStateDrawable(mConfig.getCurrentThemeColor(), ContextCompat.getColor(this, R.color.white)));
-
         }
 
+        int color;
+        if (mIsNightMode) {
+            color = ContextCompat.getColor(this, R.color.black);
+        } else {
+            int[] attrs = {android.R.attr.navigationBarColor};
+            @SuppressLint("ResourceType") TypedArray typedArray = getTheme().obtainStyledAttributes(attrs);
+            color = typedArray.getColor(0, ContextCompat.getColor(this, R.color.white));
+        }
+        getWindow().setNavigationBarColor(color);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int color;
             if (mIsNightMode) {
                 color = ContextCompat.getColor(this, R.color.black);
             } else {
@@ -77,39 +73,17 @@ public class ContentHighlightActivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(color);
         }
 
-        loadContentFragment();
+        loadHighlightsFragment();
+
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
-
-
-        findViewById(R.id.btn_highlights).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadHighlightsFragment();
-            }
-        });
-
-
-
-    }
-
-    private void loadContentFragment() {
-        findViewById(R.id.btn_highlights).setSelected(false);
-        TableOfContentFragment contentFrameLayout = TableOfContentFragment.newInstance(publication,
-                getIntent().getStringExtra(Constants.CHAPTER_SELECTED),
-                getIntent().getStringExtra(Constants.BOOK_TITLE));
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.parent, contentFrameLayout);
-        ft.commit();
     }
 
     private void loadHighlightsFragment() {
-        findViewById(R.id.btn_highlights).setSelected(true);
         String bookId = getIntent().getStringExtra(FolioReader.EXTRA_BOOK_ID);
         String bookTitle = getIntent().getStringExtra(Constants.BOOK_TITLE);
         HighlightFragment highlightFragment = HighlightFragment.newInstance(bookId, bookTitle);
@@ -118,14 +92,5 @@ public class ContentHighlightActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    private void loadBookmarksFragment(){
-        Log.i("loadBookmarksFragment", ": loading bookmark fragment");
-        findViewById(R.id.btn_highlights).setSelected(false);
-        String bookId = getIntent().getStringExtra(FolioReader.EXTRA_BOOK_ID);
-        String bookTitle = getIntent().getStringExtra(Constants.BOOK_TITLE);
-        BookmarkFragment bookmarkFragment = BookmarkFragment.newInstance(bookId, bookTitle);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.parent, bookmarkFragment);
-        ft.commit();
-    }
+
 }

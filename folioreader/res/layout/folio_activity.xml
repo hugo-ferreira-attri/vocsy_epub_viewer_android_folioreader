@@ -72,7 +72,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bottom_progress_bar"
-        app:srcCompat="@drawable/mark_full" />
+        app:srcCompat="@drawable/mark_full"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -84,7 +85,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/set_font_minus"
         app:layout_constraintTop_toBottomOf="@+id/bottom_progress_bar"
-        app:srcCompat="@drawable/aa" />
+        app:srcCompat="@drawable/aa"
+        tools:ignore="ContentDescription" />
 
     <Switch
         android:id="@+id/switch_theme"
@@ -111,7 +113,7 @@
         app:layout_constraintStart_toEndOf="@+id/bottom_marcador"
         app:layout_constraintTop_toBottomOf="@+id/bottom_progress_bar"
         app:srcCompat="@drawable/ic_format_underlined"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="ContentDescription,MissingConstraints" />
 
     <ImageView
         android:id="@+id/set_font_plus"
@@ -123,7 +125,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/bottom_progress_bar"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/plus"
+        tools:ignore="ContentDescription" />
 
 
 

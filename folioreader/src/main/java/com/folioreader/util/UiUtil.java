@@ -120,17 +120,16 @@ public class UiUtil {
 
     public static void setBackColorToTextView(UnderlinedTextView textView, String type) {
         Context context = textView.getContext();
-        if (type.equals("highlight_yellow")) {
-            setUnderLineColor(textView, context, R.color.highlight_yellow, R.color.highlight_yellow);
-        } else if (type.equals("highlight_green")) {
-            setUnderLineColor(textView, context, R.color.highlight_green, R.color.highlight_green);
-        } else if (type.equals("highlight_blue")) {
-            setUnderLineColor(textView, context, R.color.highlight_blue, R.color.highlight_blue);
-        } else if (type.equals("highlight_pink")) {
-            setUnderLineColor(textView, context, R.color.highlight_pink, R.color.highlight_pink);
-        } else if (type.equals("highlight_underline")) {
-            setUnderLineColor(textView, context, android.R.color.transparent, android.R.color.holo_red_dark);
-            textView.setUnderlineWidth(2.0f);
+        if (type.equals("ligth_gray")) {
+            setUnderLineColor(textView, context, R.color.ligth_gray, R.color.ligth_gray);
+        } else if (type.equals("dark_gray")) {
+            setUnderLineColor(textView, context, R.color.dark_gray, R.color.dark_gray);
+        } else if (type.equals("blue_mark")) {
+            setUnderLineColor(textView, context, R.color.blue_mark, R.color.blue_mark);
+        } else if (type.equals("yelow_mark")) {
+            setUnderLineColor(textView, context, R.color.yelow_mark, R.color.yelow_mark);
+        } else if (type.equals("dark_blue_mark")) {
+            setUnderLineColor(textView, context, R.color.dark_blue_mark, R.color.dark_blue_mark);
         }
     }
 

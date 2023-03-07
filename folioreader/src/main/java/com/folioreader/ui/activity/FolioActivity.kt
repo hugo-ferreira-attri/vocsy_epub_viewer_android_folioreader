@@ -108,7 +108,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var mEpubSourceType: EpubSourceType? = null
     private var mEpubRawId = 0
     private var mediaControllerFragment: MediaControllerFragment? = null
-    private var direction: Config.Direction = Config.Direction.VERTICAL
+    private var direction: Config.Direction = Config.Direction.HORIZONTAL
     private var portNumber: Int = DEFAULT_PORT_NUMBER
     private var streamerUri: Uri? = null
 
@@ -123,7 +123,7 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     private var taskImportance: Int = 0
 
     //Minhas variaveis
-
+    private var isNight: Boolean = false
     private var progressBar: ProgressBar? =null
     private var totalPages: Int = 0
     private var currentPage: Int = 0
@@ -383,13 +383,16 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
     }
 
     override fun setDayMode() {
-        Log.v(LOG_TAG, "-> setDayMode")
-
         actionBar!!.setBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(this, R.color.white))
         )
-
-        toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.black))
+        toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
+        isNight = false
+        val someView = findViewById<DirectionalViewpager>(R.id.folioPageViewPager)
+        val root = someView.rootView
+        root.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
+        val drawable = ContextCompat.getDrawable(this, R.drawable.rounded_border_day)
+        someView.background = drawable
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
@@ -401,21 +404,27 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         // Update toolbar colors
         createdMenu?.let { m ->
             UiUtil.setColorIntToDrawable(config.themeColor, m.findItem(R.id.itemMark).icon)
-            UiUtil.setColorIntToDrawable(config.themeColor, m.findItem(R.id.itemConfig).icon)
         }
 
         toolbar?.overflowIcon?.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+        config.isNightMode = false
+        AppUtil.saveConfig(applicationContext, config)
+        EventBus.getDefault().post(ReloadDataEvent())
 
     }
 
     override fun setNightMode() {
-        Log.v(LOG_TAG, "-> setNightMode")
 
         actionBar!!.setBackgroundDrawable(
             ColorDrawable(ContextCompat.getColor(this, R.color.black))
         )
-
         toolbar!!.setTitleTextColor(ContextCompat.getColor(this, R.color.night_title_text_color))
+        isNight = true
+        val someView = findViewById<DirectionalViewpager>(R.id.folioPageViewPager)
+        val root = someView.rootView
+        root.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+        val drawable = ContextCompat.getDrawable(this, R.drawable.rounded_border_night)
+        someView.background = drawable
 
         val config = AppUtil.getSavedConfig(applicationContext)!!
 
@@ -427,11 +436,12 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
         // Update toolbar colors
         createdMenu?.let { m ->
             UiUtil.setColorIntToDrawable(config.nightThemeColor, m.findItem(R.id.itemMark).icon)
-            UiUtil.setColorIntToDrawable(config.nightThemeColor, m.findItem(R.id.itemConfig).icon)
-
         }
 
         toolbar?.overflowIcon?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        config.isNightMode = true
+        AppUtil.saveConfig(applicationContext, config)
+        EventBus.getDefault().post(ReloadDataEvent())
 
     }
 
@@ -448,24 +458,8 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
 
             val config = AppUtil.getSavedConfig(applicationContext)!!
 
-//            toolbar?.getOverflowIcon()?.setColorFilter(config.currentThemeColor, PorterDuff.Mode.SRC_ATOP);
-//            for (i in 0 until menu.size()) {
-//                val drawable: Drawable = menu.getItem(i).getIcon()
-//                if (drawable != null) {
-//                    drawable.mutate()
-//                    drawable.setColorFilter(
-//                        config.currentThemeColor,
-//                        PorterDuff.Mode.SRC_ATOP
-//                    )
-//                }
-//            }
-
-
             UiUtil.setColorIntToDrawable(
                 config.currentThemeColor, menu.findItem(R.id.itemMark).icon
-            )
-            UiUtil.setColorIntToDrawable(
-                config.currentThemeColor, menu.findItem(R.id.itemConfig).icon
             )
         } catch (e: Exception) {
             Log.e("FOLIOREADER", e.message.toString())
@@ -484,12 +478,6 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             }
             R.id.itemMark -> {
                 startContentHighlightActivity()
-                return true
-            }
-
-            R.id.itemConfig -> {
-                Log.v(LOG_TAG, "-> onOptionsItemSelected -> " + item.title)
-                showConfigBottomSheetDialogFragment()
                 return true
             }
 
@@ -821,6 +809,31 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             if (appBarLayout != null) appBarLayout!!.setTopMargin(statusBarHeight)
             onSystemUiVisibilityChange(View.SYSTEM_UI_FLAG_VISIBLE)
         }
+
+        if(appBarLayout !=null){
+            if(isNight){
+                appBarLayout!!.setBackgroundColor(
+                    ContextCompat.getColor(this, R.color.black))
+            }else{
+                appBarLayout!!.setBackgroundColor(
+                    ContextCompat.getColor(this, R.color.white))
+            }
+
+            val btnMark = findViewById<ImageView>(R.id.bottom_marcador)
+            btnMark.visibility = View.VISIBLE
+
+            val btnSetFontMinus = findViewById<ImageView>(R.id.set_font_minus)
+            btnSetFontMinus.visibility = View.VISIBLE
+
+            val textAA = findViewById<ImageView>(R.id.imageView4)
+            textAA.visibility = View.VISIBLE
+
+            val btnSetFontPlus = findViewById<ImageView>(R.id.set_font_plus)
+            btnSetFontPlus.visibility = View.VISIBLE
+
+            val switchButton = findViewById<Switch>(R.id.switch_theme)
+                switchButton.visibility = View.VISIBLE
+        }
     }
 
     private fun hideSystemUI() {
@@ -842,8 +855,34 @@ class FolioActivity : AppCompatActivity(), FolioActivityCallback, MediaControlle
             // Specified 1 just to mock anything other than View.SYSTEM_UI_FLAG_VISIBLE
             onSystemUiVisibilityChange(1)
         }
-    }
 
+        if (appBarLayout != null) {
+            if (isNight) {
+                appBarLayout!!.setBackgroundColor(
+                    ContextCompat.getColor(this, R.color.black)
+                )
+            } else {
+                appBarLayout!!.setBackgroundColor(
+                    ContextCompat.getColor(this, R.color.white)
+                )
+            }
+
+            val btnMark = findViewById<ImageView>(R.id.bottom_marcador)
+            btnMark.visibility = View.INVISIBLE
+
+            val btnSetFontMinus = findViewById<ImageView>(R.id.set_font_minus)
+            btnSetFontMinus.visibility = View.INVISIBLE
+
+            val textAA = findViewById<ImageView>(R.id.imageView4)
+            textAA.visibility = View.INVISIBLE
+
+            val btnSetFontPlus = findViewById<ImageView>(R.id.set_font_plus)
+            btnSetFontPlus.visibility = View.INVISIBLE
+
+            val switchButton = findViewById<Switch>(R.id.switch_theme)
+            switchButton.visibility = View.INVISIBLE
+        }
+    }
     override fun getEntryReadLocator(): ReadLocator? {
         if (entryReadLocator != null) {
             val tempReadLocator = entryReadLocator

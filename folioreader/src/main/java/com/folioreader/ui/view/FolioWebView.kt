@@ -300,25 +300,20 @@ class FolioWebView : WebView {
         viewTextSelection = LayoutInflater.from(ctw).inflate(R.layout.text_selection, null)
         viewTextSelection.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
-        viewTextSelection.yellowHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> yellowHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Yellow, false)
+        viewTextSelection.grayHighLight.setOnClickListener {
+            onHighlightColorItemsClicked(HighlightStyle.LigthGray, false)
         }
-        viewTextSelection.greenHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> greenHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Green, false)
+        viewTextSelection.darkGrayHighLight.setOnClickListener {
+            onHighlightColorItemsClicked(HighlightStyle.DarkGray, false)
         }
         viewTextSelection.blueHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> blueHighlight")
             onHighlightColorItemsClicked(HighlightStyle.Blue, false)
         }
-        viewTextSelection.pinkHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> pinkHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Pink, false)
+        viewTextSelection.yelowMarkHighlight.setOnClickListener {
+            onHighlightColorItemsClicked(HighlightStyle.YellowMark, false)
         }
-        viewTextSelection.underlineHighlight.setOnClickListener {
-            Log.v(LOG_TAG, "-> onClick -> underlineHighlight")
-            onHighlightColorItemsClicked(HighlightStyle.Underline, false)
+        viewTextSelection.darkBlueHighlight.setOnClickListener {
+            onHighlightColorItemsClicked(HighlightStyle.DarkBlue, false)
         }
 
         viewTextSelection.deleteHighlight.setOnClickListener {
@@ -326,45 +321,6 @@ class FolioWebView : WebView {
             dismissPopupWindow()
             loadUrl("javascript:clearSelection()")
             loadUrl("javascript:deleteThisHighlight()")
-        }
-
-        viewTextSelection.copySelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
-        viewTextSelection.shareSelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
-        viewTextSelection.defineSelection.setOnClickListener {
-            dismissPopupWindow()
-            loadUrl("javascript:onTextSelectionItemClicked(${it.id})")
-        }
-    }
-
-    @JavascriptInterface
-    fun onTextSelectionItemClicked(id: Int, selectedText: String?) {
-
-        uiHandler.post { loadUrl("javascript:clearSelection()") }
-
-        when (id) {
-            R.id.copySelection -> {
-                Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> copySelection -> $selectedText")
-                UiUtil.copyToClipboard(context, selectedText)
-                Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT)
-                    .show()
-            }
-            R.id.shareSelection -> {
-                Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> shareSelection -> $selectedText")
-                UiUtil.share(context, selectedText)
-            }
-            R.id.defineSelection -> {
-                Log.v(LOG_TAG, "-> onTextSelectionItemClicked -> defineSelection -> $selectedText")
-                uiHandler.post { showDictDialog(selectedText) }
-            }
-            else -> {
-                Log.w(LOG_TAG, "-> onTextSelectionItemClicked -> unknown id = $id")
-            }
         }
     }
 

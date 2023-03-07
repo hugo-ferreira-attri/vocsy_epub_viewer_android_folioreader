@@ -15,13 +15,4 @@
 
 
 
-    <item
-        android:id="@+id/itemConfig"
-        android:icon="@drawable/icon_font"
-        android:title="@string/menu_item_config"
-        app:showAsAction="ifRoom"
-        tools:showAsAction="always" />
-
-
-
 </menu>

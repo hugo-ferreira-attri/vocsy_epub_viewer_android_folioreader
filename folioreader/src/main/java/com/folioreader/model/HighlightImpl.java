@@ -3,7 +3,10 @@ package com.folioreader.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * This data structure holds information about an individual highlight.
@@ -72,11 +75,11 @@ public class HighlightImpl implements Parcelable, HighLight {
     private String note;
 
     public enum HighlightStyle {
-        Yellow,
-        Green,
+        LigthGray,
+        DarkGray,
         Blue,
-        Pink,
-        Underline,
+        YellowMark,
+        DarkBlue,
         TextColor,
         DottetUnderline,
         Normal;
@@ -86,16 +89,16 @@ public class HighlightImpl implements Parcelable, HighLight {
          */
         public static String classForStyle(HighlightStyle style) {
             switch (style) {
-                case Yellow:
-                    return "highlight_yellow";
-                case Green:
-                    return "highlight_green";
+                case LigthGray:
+                    return "ligth_gray";
+                case DarkGray:
+                    return "dark_gray";
                 case Blue:
-                    return "highlight_blue";
-                case Pink:
-                    return "highlight_pink";
-                case Underline:
-                    return "highlight_underline";
+                    return "blue_mark";
+                case YellowMark:
+                    return "yelow_mark";
+                case DarkBlue:
+                    return "dark_blue_mark";
                 case DottetUnderline:
                     return "mediaOverlayStyle1";
                 case TextColor:
@@ -232,6 +235,7 @@ public class HighlightImpl implements Parcelable, HighLight {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
+
 
     @Override
     public String toString() {

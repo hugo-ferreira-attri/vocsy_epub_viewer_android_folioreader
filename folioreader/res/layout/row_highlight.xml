@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,7 +16,8 @@
             android:background="#8A2BE2"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:src="@drawable/edit_note" />
+            android:src="@drawable/edit_note"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/iv_delete"
@@ -24,7 +26,8 @@
             android:background="#FF3B30"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:src="@drawable/trash" />
+            android:src="@drawable/trash"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <RelativeLayout
@@ -38,10 +41,11 @@
             android:id="@+id/tv_highlight_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20 sep 2016"
+            android:text="     "
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <com.folioreader.ui.view.UnderlinedTextView
             android:id="@+id/utv_highlight_content"
